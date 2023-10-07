@@ -7,7 +7,6 @@
 
 // Execute `starklings hint traits3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
 #[derive(Copy, Drop)]
 struct Fish {
@@ -35,9 +34,9 @@ trait DogTrait {
     fn walk(ref self: Dog) -> ();
 }
 
-impl AnimalFishImpl of AnimalTrait<Fish> {
+impl AnimalFishImpl of AnimalTrait::<Fish> {
     fn new() -> Fish {
-        Fish { noise: 'blub', distance: 0 }
+        Fish { noise: 'blub', distance: 0_u32 }
     }
     fn make_noise(self: Fish) -> felt252 {
         self.noise
@@ -47,9 +46,9 @@ impl AnimalFishImpl of AnimalTrait<Fish> {
     }
 }
 
-impl AnimalDogImpl of AnimalTrait<Dog> {
+impl AnimalDogImpl of AnimalTrait::<Dog> {
     fn new() -> Dog {
-        Dog { noise: 'woof', distance: 0 }
+        Dog { noise: 'woof', distance: 0_u32 }
     }
     fn make_noise(self: Dog) -> felt252 {
         self.noise
@@ -61,7 +60,23 @@ impl AnimalDogImpl of AnimalTrait<Dog> {
 
 // TODO: implement FishTrait for the type Fish
 
+impl FishImpl of FishTrait {
+    fn swim(ref self: Fish) {
+        let Fish {noise, mut distance} = self;
+        distance = 1_u32;
+        self = Fish {noise, distance};
+    }
+}
+
 // TODO: implement DogTrait for the type Dog
+
+impl DogImpl of DogTrait {
+    fn walk(ref self: Dog) {
+        let Dog {noise, mut distance} = self;
+        distance = 1_u32;
+        self = Dog {noise, distance}; 
+    }
+}
 
 #[test]
 fn test_traits3() {
@@ -69,10 +84,10 @@ fn test_traits3() {
     let mut salmon: Fish = AnimalTrait::new();
     salmon.swim();
     assert(salmon.make_noise() == 'blub', 'Wrong noise');
-    assert(salmon.get_distance() == 1, 'Wrong distance');
+    assert(salmon.get_distance() == 1_u32, 'Wrong distance');
 
     let mut dog: Dog = AnimalTrait::new();
     dog.walk();
     assert(dog.make_noise() == 'woof', 'Wrong noise');
-    assert(dog.get_distance() == 1, 'Wrong distance');
+    assert(dog.get_distance() == 1_u32, 'Wrong distance');
 }

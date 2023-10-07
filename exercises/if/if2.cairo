@@ -3,8 +3,7 @@
 // Step 1: Make me compile!
 // Step 2: Get the bar_for_fuzz and default_to_baz tests passing!
 // Execute `starklings hint if2` or use the `hint` watch subcommand for a hint.
-
-// I AM NOT DONE
+use traits::Into;
 
 fn foo_if_fizz(fizzish: felt252) -> felt252 {
     // Complete this function using if, else if and/or else blocks.
@@ -15,12 +14,15 @@ fn foo_if_fizz(fizzish: felt252) -> felt252 {
     if fizzish == 'fizz' {
         'foo'
     } else {
-        1_u32
+        if fizzish == 'fuzz' {
+          'bar'
+        } else {
+          'baz'
+        }
     }
 }
 
 // No test changes needed!
-#[cfg(test)]
 mod tests {
     use super::foo_if_fizz;
 
